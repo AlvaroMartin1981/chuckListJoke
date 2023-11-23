@@ -34,5 +34,17 @@ const mostrarChistes = (data) => {
        
     }
 
-
+/*const contadorVisitas = document.getElementById("contadorVisitas")
+const btnReestablecer = document.getElementById("btnReestablecer")
+let contador = localStorage.getItem("contador") || 0
+    // let contador = localStorage.getItem("contador")? localStorage.getItem("contador") : 1
+contador++
+localStorage.setItem("contador", contador)
+contadorVisitas.innerHTML = contador
+const restablecerContador = () => {
+    localStorage.removeItem("contador")
+    contador = 0
+    contadorVisitas.innerHTML = contador
+}
+btnReestablecer.addEventListener("click", restablecerContador)*/
 
