@@ -1,50 +1,177 @@
-/*
-    Manejador de click en el botón "Obtener Chiste"
-    Una función para obtener un chiste de Chuck Norris desde la API
-    Una función para renderizar la lista de chistes en el DOM
-    Una función para guardar la lista de chistes en localStorage
-    Una función para cargar la lista de chistes desde localStorage
-    button id="fetchJoke"
-    ul id="jokeList"
-revisar si fuera necesario JSON.stringify y JSON.parse para los datos del localStorage*/
- const obtenerChiste = document.getElementById('fetchJoke');
- const listaChiste = document.getElementById('jokeList');
+const fetchJoke = document.getElementById('fetchJoke');
+const jokeList = document.getElementById('jokeList');
+const clear = document.getElementById('clear');
 
 
- //obtenerChiste.addEventListener('click',()=> {
-    fetch("https://api.chucknorris.io/jokes/random")
-    .then(response => {
-        if(!response.ok){
-            throw new Error('No se pudo obtener el chiste');
-        }
-            return response.json()
+printJokes ();
+
+
+clear.addEventListener('click', ()=>{
+    localStorage.removeItem('chuckJokes');
+    jokeList.innerHTML='';
+})
+
+fetchJoke.addEventListener('click', ()=>{
+    fetch ('https://api.chucknorris.io/jokes/random')
+        .then(response =>{
+            if(!response.ok){
+                throw new Error ('La solucitud no tuvo exito')
+            }
+            return response.json();
         })
-    .then(data => {
-        mostrarChistes(data);
-    })
-    .catch(error => {
-        listaChiste.innerHTML
-        console.error(error);
-    })
+        .then (jokes =>{
+            getJokes(jokes);
+            printJokes()
 
-const mostrarChistes = (data) => {
-        listaChiste.innerHTML = ''
-        listaChiste.innerHTML += `
-            <li>${data.value}</li>`;
-       
+        })
+        .catch(error =>{
+            console.error(error)
+            jokeList.innerHTML = 'error de pagina'
+        })
+
+
+})
+
+function getJokes (joke){
+    const {value} = joke;
+    console.log(value);
+    let listado = JSON.parse(localStorage.getItem('chuckJokes'));
+    console.log('listado: ' , listado)
+    if (listado === null){
+        listado = [value];        
+    }else{
+        listado.push(value);
+    }
+    localStorage.setItem('chuckJokes', JSON.stringify(listado))
+
+    console.log(listado)
+    localStorage.setItem('chuckJokes', JSON.stringify(listado))
+}
+
+function printJokes (){
+
+    jokeList.innerHTML='';
+    let listado = JSON.parse(localStorage.getItem('chuckJokes'));
+    if (listado !== null){
+    listado.forEach((element, i) => {
+        console.log(i);
+        jokeList.innerHTML += `
+        <li>
+            ${element}
+            
+        </li>        
+        `
+    });
+}
+
+const btn = document.querySelectorAll('.btn');
+    console.log('boton',btn);
+    for (element of btn){
+        element.addEventListener('click', (boton=>{
+            borrarJoke(boton.value);
+        }))
     }
 
-/*const contadorVisitas = document.getElementById("contadorVisitas")
-const btnReestablecer = document.getElementById("btnReestablecer")
-let contador = localStorage.getItem("contador") || 0
-    // let contador = localStorage.getItem("contador")? localStorage.getItem("contador") : 1
-contador++
-localStorage.setItem("contador", contador)
-contadorVisitas.innerHTML = contador
-const restablecerContador = () => {
-    localStorage.removeItem("contador")
-    contador = 0
-    contadorVisitas.innerHTML = contador
 }
-btnReestablecer.addEventListener("click", restablecerContador)*/
+/*
+function borrarJoke(posicion){
+    let listado = JSON.parse(localStorage.getItem('chuckJokes'));
+    let nuevoListado = [];
+    for (let i = 0; i< listado.lenght;i++){
+        if (i !== posicion){
+            nuevoListado.push(listado[i])
+        }
+    }
+    console.log(nuevoListado)
+    localStorage.setItem('chuckJokes', JSON.stringify(nuevoListado))
+    printJokes();
+}*//*const fetchJoke = document.getElementById('fetchJoke');
+const jokeList = document.getElementById('jokeList');
+const clear = document.getElementById('clear');
+
+
+printJokes ();
+
+
+clear.addEventListener('click', ()=>{
+    localStorage.removeItem('chuckJokes');
+    jokeList.innerHTML='';
+})
+
+fetchJoke.addEventListener('click', ()=>{
+    fetch ('https://api.chucknorris.io/jokes/random')
+        .then(response =>{
+            if(!response.ok){
+                throw new Error ('La solucitud no tuvo exito')
+            }
+            return response.json();
+        })
+        .then (jokes =>{
+            getJokes(jokes);
+            printJokes()
+
+        })
+        .catch(error =>{
+            console.error(error)
+            jokeList.innerHTML = 'error de pagina'
+        })
+
+
+})
+
+function getJokes (joke){
+    const {value} = joke;
+    console.log(value);
+    let listado = JSON.parse(localStorage.getItem('chuckJokes'));
+    console.log('listado: ' , listado)
+    if (listado === null){
+        listado = [value];        
+    }else{
+        listado.push(value);
+    }
+    localStorage.setItem('chuckJokes', JSON.stringify(listado))
+        
+    console.log(listado)
+    localStorage.setItem('chuckJokes', JSON.stringify(listado))
+}
+
+function printJokes (){
+    
+    jokeList.innerHTML='';
+    let listado = JSON.parse(localStorage.getItem('chuckJokes'));
+    if (listado !== null){
+    listado.forEach((element, i) => {
+        console.log(i);
+        jokeList.innerHTML += `
+        <li>
+            ${element}
+            
+        </li>        
+        `
+    });
+}
+
+const btn = document.querySelectorAll('.btn');
+    console.log('boton',btn);
+    for (element of btn){
+        element.addEventListener('click', (boton=>{
+            borrarJoke(boton.value);
+        }))
+    }
+
+}*/
+/*
+function borrarJoke(posicion){
+    let listado = JSON.parse(localStorage.getItem('chuckJokes'));
+    let nuevoListado = [];
+
+    for (let i = 0; i< listado.lenght;i++){
+        if (i !== posicion){
+            nuevoListado.push(listado[i])
+        }
+    }
+    console.log(nuevoListado)
+    localStorage.setItem('chuckJokes', JSON.stringify(nuevoListado))
+    printJokes();
+}*/
 
